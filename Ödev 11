@@ -1,0 +1,14 @@
+1) 
+(select first_name from actor)
+union 
+(select first_name from customer);
+
+peki bu combined verinin kaç adet olduğunu nasıl sorgularız?:
+
+SELECT COUNT(*) AS total_count
+FROM (
+    (SELECT first_name FROM actor)
+    UNION
+    (SELECT first_name FROM customer)
+) AS combined_data;
+
