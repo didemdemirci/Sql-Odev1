@@ -1,0 +1,24 @@
+1)
+select  country,city from country
+inner join city on city.country_id= country.country_id
+order by country.country;
+
+burada yalnızca order by country desek de olur
+
+2)
+select payment_id, first_name, last_name from customer 
+inner join payment on customer.customer_id = payment.customer_id;
+
+Eğer her müşterinin payment_id'lerini sıralamak istersek: 
+
+SELECT first_name, last_name, STRING_AGG(payment_id::TEXT, ', ') AS payment_ids
+FROM customer
+INNER JOIN payment ON customer.customer_id = payment.customer_id
+GROUP BY first_name, last_name;
+
+3)
+SELECT first_name, last_name, rental_id 
+FROM customer
+INNER JOIN rental ON customer.customer_id = rental.customer_id
+
+
