@@ -1,0 +1,43 @@
+1)
+select count(*) from film
+where length> (select avg(length) from film);
+
+2)
+select count(*) from film
+where rental_rate= (select max(rental_rate) from film);
+
+3)
+select title, rental_rate, replacement_cost from film
+where rental_rate= (select min(rental_rate) from film) and
+replacement_cost=(select min(replacement_cost) from film);
+
+4)
+select customer.first_name, customer.last_name, count(distinct payment_id) as alisveris_sayisi from customer join payment on
+customer.customer_id=payment.customer_id
+group by customer.first_name, customer.last_name
+order by count(distinct payment_id)desc
+limit 1;
+
+ya da 
+
+select customer.first_name, customer.last_name, count(distinct payment_id) as alisveris_sayisi from customer join payment on
+customer.customer_id=payment.customer_id
+group by customer.first_name, customer.last_name
+having count(distinct payment_id)=(SELECT MAX(alisveris_sayisi)
+    FROM (
+        SELECT customer_id, COUNT(DISTINCT payment_id) AS alisveris_sayisi
+        FROM payment
+        GROUP BY customer_id
+    )as subquery );
+
+alışveriş adeti değil de haracanan tutar üzerinden olsaydı:
+
+select customer.first_name, customer.last_name, sum(payment.amount) as tutar from customer join payment on
+customer.customer_id=payment.customer_id
+group by customer.first_name, customer.last_name
+having sum(amount)=(SELECT MAX(tutar) 
+    FROM (
+        SELECT customer_id, sum(amount) AS tutar
+        FROM payment
+        GROUP BY customer_id
+    )as subquery );
